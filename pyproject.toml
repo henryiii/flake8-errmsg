@@ -1,22 +1,18 @@
 [build-system]
-requires = ["hatchling>=0.7"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 
 [project]
 name = "flake8_errmsg"
-version = "0.1.0"
 authors = [
     { name = "Henry Schreiner", email = "henryschreineriii@gmail.com" },
-]
-maintainers = [
-    { name = "The Scikit-HEP admins", email = "scikit-hep-admins@googlegroups.com" },
 ]
 
 description = "Flake8 checker for raw literals inside raises."
 readme = "README.md"
 
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 
 classifiers = [
     "License :: OSI Approved :: BSD License",
@@ -27,46 +23,42 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Development Status :: 1 - Planning",
+    "Development Status :: 4 - Beta",
+    "Typing :: Typed",
 ]
-
-dependencies = [
-    "typing_extensions >=3.7; python_version<'3.8'",
-]
+dynamic = ["version"]
 
 [project.optional-dependencies]
 test = [
-    "pytest >=6",
-    "pytest-cov >=3",
+    "pytest >=7",
 ]
 dev = [
-    "pytest >=6",
-    "pytest-cov >=3",
-]
-docs = [
-    "Sphinx>=4.0",
-    "myst_parser>=0.13",
-    "sphinx-book-theme>=0.1.0",
-    "sphinx_copybutton",
+    "pytest >=7",
+    "flake8",
 ]
 
 [project.urls]
 homepage = "https://github.com/henryiii/flake8-errmsg"
 
+[project.scripts]
+flake8-errmsg = "flake8_errmsg:main"
 
-[tool.hatch.envs.default]
-dependencies = [
+[[project.entry_points."flake8.extension"]]
+EM = "flake8_errmsg:ErrMsgASTPlugin"
+
+
+[tool.hatch]
+version.path = "src/flake8_errmsg/__init__.py"
+envs.default.dependencies = [
   "pytest",
-  "pytest-cov",
 ]
 
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
 xfail_strict = true
 filterwarnings = ["error"]
@@ -77,7 +69,7 @@ testpaths = [
 
 [tool.mypy]
 files = "src"
-python_version = "3.7"
+python_version = "3.10"
 warn_unused_configs = true
 strict = true
 show_error_codes = true
@@ -89,8 +81,12 @@ warn_unreachable = true
 profile = "black"
 
 
+[tool.black]
+target-version = ['py310']
+
+
 [tool.pylint]
-master.py-version = "3.7"
+master.py-version = "3.10"
 master.ignore-paths= ["src/flake8_errmsg/_version.py"]
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
@@ -99,4 +95,8 @@ messages_control.disable = [
   "fixme",
   "line-too-long",
   "wrong-import-position",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "invalid-name",
 ]
