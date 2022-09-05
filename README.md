@@ -10,7 +10,6 @@
 [![GitHub Discussion][github-discussions-badge]][github-discussions-link]
 [![Gitter][gitter-badge]][gitter-link]
 
-
 <!-- prettier-ignore-start -->
 [actions-badge]:            https://github.com/henryiii/flake8-errmsg/workflows/CI/badge.svg
 [actions-link]:             https://github.com/henryiii/flake8-errmsg/actions

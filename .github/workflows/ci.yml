@@ -5,9 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - master
       - main
-      - develop
   release:
     types:
       - published
@@ -42,12 +40,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.10"]
+        python-version: ["3.10", "3.11-dev"]
         runs-on: [ubuntu-latest, macos-latest, windows-latest]
-
-        include:
-          - python-version: pypy-3.8
-            runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -62,7 +56,7 @@ jobs:
         run: python -m pip install .[test]
 
       - name: Test package
-        run: python -m pytest -ra --cov=flake8-errmsg
+        run: python -m pytest -ra
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v3.1.0
@@ -90,7 +84,4 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@v1.5.0
         if: github.event_name == 'release' && github.event.action == 'published'
         with:
-          # Remember to generate this and set it in "GitHub Secrets"
           password: ${{ secrets.pypi_password }}
-          # Remove this line
-          repository_url: https://test.pypi.org/legacy/
