@@ -79,7 +79,9 @@ statements are fantastic for this sort of thing. And the AST module changed in
 
 Q: What other sorts of checks are acceptable? <br/> A: Things that help with
 nice errors. For example, maybe requiring `raise SystemExit(n)` over `sys.exit`,
-`exit`, etc.
+`exit`, etc. A configuration option allowing short non f-strings might be
+useful. Possibly adding a check for `warnings.warn` without setting `stacklevel`
+to something (usually 2).
 
 <!-- prettier-ignore-start -->
 [actions-badge]:            https://github.com/henryiii/flake8-errmsg/workflows/CI/badge.svg
