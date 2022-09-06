@@ -12,6 +12,7 @@ import ast
 import dataclasses
 import sys
 import traceback
+from functools import partial
 from pathlib import Path
 from typing import Iterator, NamedTuple
 
@@ -34,14 +35,16 @@ class Visitor(ast.NodeVisitor):
     def visit_Raise(self, node: ast.Raise) -> None:
         match node.exc:
             case ast.Call(args=[ast.Constant(value=str()), *_]):
-                msg = "EM101 Exception must not use a string literal, assign to variable first"
+                self.errors.append(EM101(line_number=node.lineno, offset=node.col_offset))
             case ast.Call(args=[ast.JoinedStr(), *_]):
-                msg = "EM102 Exception must not use a f-string literal, assign to variable first"
+                self.errors.append(EM102(line_number=node.lineno, offset=node.col_offset))
             case _:
-                return
+                pass
 
-        err = Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, type(self))
-        self.errors.append(err)
+
+ErrInfo = partial(partial, Flake8ASTErrorInfo, cls=Visitor)
+EM101 = ErrInfo(msg="EM101 Exception must not use a string literal, assign to variable first")
+EM102 = ErrInfo(msg="EM102 Exception must not use an f-string literal, assign to variable first")
 
 
 @dataclasses.dataclass
