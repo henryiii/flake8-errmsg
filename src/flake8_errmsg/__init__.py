@@ -17,7 +17,7 @@ from typing import Iterator, NamedTuple
 
 __all__ = ("__version__", "run_on_file", "main", "ErrMsgASTPlugin")
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 
 class Flake8ASTErrorInfo(NamedTuple):
