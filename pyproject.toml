@@ -46,7 +46,7 @@ homepage = "https://github.com/henryiii/flake8-errmsg"
 flake8-errmsg = "flake8_errmsg:main"
 
 [project.entry_points."flake8.extension"]
-EM = ["flake8_errmsg:ErrMsgASTPlugin"]
+EM = "flake8_errmsg:ErrMsgASTPlugin"
 
 
 [tool.hatch]
