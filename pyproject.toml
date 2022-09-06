@@ -15,6 +15,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 
 classifiers = [
+    "Framework :: Flake8",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Quality Assurance",
     "Intended Audience :: Developers",
