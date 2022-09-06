@@ -64,7 +64,7 @@ Just add this to your `.pre-commit-config.yaml` `flake8` check under
 config.
 
 You can also manually run this check (without flake8's `noqa` filtering) via
-script entry-point (`pipx run flake8_errmsg <files>`) or module entry-point
+script entry-point (`pipx run flake8-errmsg <files>`) or module entry-point
 (`python -m flake8_errmsg <files>` when installed).
 
 ## FAQ
@@ -72,7 +72,7 @@ script entry-point (`pipx run flake8_errmsg <files>`) or module entry-point
 Q: Why not look for `"".format()` too? <br/> A: Tools like pyupgrade should help
 move to fstrings, so these should be rare. But it would likely be easy to add.
 
-Q: Why Python 3.10 only? <br/> A: This is a static checker and for developers.
+Q: Why Python 3.10+ only? <br/> A: This is a static checker and for developers.
 Developers and static checks should be on 3.10 already. And I was lazy and match
 statements are fantastic for this sort of thing. And the AST module changed in
 3.8 anyway.
