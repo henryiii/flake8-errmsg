@@ -34,15 +34,14 @@ class Visitor(ast.NodeVisitor):
     def visit_Raise(self, node: ast.Raise) -> None:
         match node.exc:
             case ast.Call(args=[ast.Constant(value=str()), *_]):
-                msg = "EM101 exception must not use a string literal, assign to variable first"
-                err = Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, type(self))
-                self.errors.append(err)
+                msg = "EM101 Exception must not use a string literal, assign to variable first"
             case ast.Call(args=[ast.JoinedStr(), *_]):
-                msg = "EM102 exception must not use a f-string literal, assign to variable first"
-                err = Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, type(self))
-                self.errors.append(err)
+                msg = "EM102 Exception must not use a f-string literal, assign to variable first"
             case _:
-                pass
+                return
+
+        err = Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, type(self))
+        self.errors.append(err)
 
 
 @dataclasses.dataclass
