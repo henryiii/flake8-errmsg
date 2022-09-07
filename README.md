@@ -1,9 +1,6 @@
 # flake8-errmsg
 
 [![Actions Status][actions-badge]][actions-link]
-[![GitHub Discussion][github-discussions-badge]][github-discussions-link]
-[![Gitter][gitter-badge]][gitter-link]
-
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
@@ -92,10 +89,6 @@ nice errors. For example, maybe requiring `raise SystemExit(n)` over `sys.exit`,
 <!-- prettier-ignore-start -->
 [actions-badge]:            https://github.com/henryiii/flake8-errmsg/workflows/CI/badge.svg
 [actions-link]:             https://github.com/henryiii/flake8-errmsg/actions
-[github-discussions-badge]: https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github
-[github-discussions-link]:  https://github.com/henryiii/flake8-errmsg/discussions
-[gitter-badge]:             https://badges.gitter.im/https://github.com/henryiii/flake8-errmsg/community.svg
-[gitter-link]:              https://gitter.im/https://github.com/henryiii/flake8-errmsg/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 [pypi-link]:                https://pypi.org/project/flake8-errmsg/
 [pypi-platforms]:           https://img.shields.io/pypi/pyversions/flake8-errmsg
 [pypi-version]:             https://badge.fury.io/py/flake8-errmsg.svg
