@@ -25,9 +25,9 @@ def test_err1():
 
     assert (
         results[0].msg
-        == "EM101 exception must not use a string literal, assign to variable first"
+        == "EM101 Exception must not use a string literal, assign to variable first"
     )
     assert (
         results[1].msg
-        == "EM102 exception must not use a f-string literal, assign to variable first"
+        == "EM102 Exception must not use an f-string literal, assign to variable first"
     )
