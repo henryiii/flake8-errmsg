@@ -91,5 +91,5 @@ nice errors. For example, maybe requiring `raise SystemExit(n)` over `sys.exit`,
 [actions-link]:             https://github.com/henryiii/flake8-errmsg/actions
 [pypi-link]:                https://pypi.org/project/flake8-errmsg/
 [pypi-platforms]:           https://img.shields.io/pypi/pyversions/flake8-errmsg
-[pypi-version]:             https://badge.fury.io/py/flake8-errmsg.svg
+[pypi-version]:             https://img.shields.io/pypi/v/flake8-errmsg
 <!-- prettier-ignore-end -->
