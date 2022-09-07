@@ -9,8 +9,10 @@
 A checker for flake8 that helps format nice error messages. Currently there are
 two checks:
 
-- **EM101**: Check for raw usage of string literals in Exception raising.
-- **EM102**: Check for raw usage of f-string literals in Exception raising.
+- **EM101**: Check for raw usage of a string literal in Exception raising.
+- **EM102**: Check for raw usage of an f-string literal in Exception raising.
+- **EM103**: Check for raw usage of `.format` on a string literal in Exception
+  raising.
 
 The issue is that Python includes the line with the raise in the default
 traceback (and most other formatters, like Rich and IPython to too). That means
@@ -59,7 +61,8 @@ error that is known to be triggerable by a user.
 There is one option, `--errmsg-max-string-length`, which defaults to 0 but can
 be set to a larger value. The check will ignore string literals shorter than
 this length. This option is supported in configuration mode as well. This will
-only affect string literals and not f-strings.
+only affect string literals and not f-strings. This option is also supported
+when running directly, without flake8.
 
 ## Usage
 
@@ -72,9 +75,6 @@ script entry-point (`pipx run flake8-errmsg <files>`) or module entry-point
 (`python -m flake8_errmsg <files>` when installed).
 
 ## FAQ
-
-Q: Why not look for `"".format()` too? <br/> A: Tools like pyupgrade should help
-move to fstrings, so these should be rare. But it would likely be easy to add.
 
 Q: Why Python 3.10+ only? <br/> A: This is a static checker and for developers.
 Developers and static checks should be on 3.10 already. And I was lazy and match
