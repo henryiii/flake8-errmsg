@@ -50,14 +50,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install package
-        run: python -m pip install .[test]
+      - name: Install nox
+        run: python -m pip install nox
 
       - name: Test package
-        run: python -m pytest -ra
-
-      - name: Upload coverage report
-        uses: codecov/codecov-action@v3.1.0
+        run: |
+          nox -s tests
+          nox -s tests_flake8
 
   dist:
     name: Distribution build

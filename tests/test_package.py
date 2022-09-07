@@ -45,3 +45,19 @@ def test_string_length():
         results[0].msg
         == "EM102 Exception must not use an f-string literal, assign to variable first"
     )
+
+
+ERR2 = """\
+raise RuntimeError("this {} is".format("that"))
+"""
+
+
+def test_err2():
+    node = ast.parse(ERR2)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    assert len(results) == 1
+    assert results[0].line_number == 1
+    assert (
+        results[0].msg
+        == "EM103 Exception must not use a .format() string directly, assign to variable first"
+    )
