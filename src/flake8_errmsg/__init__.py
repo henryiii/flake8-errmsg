@@ -12,9 +12,9 @@ import ast
 import dataclasses
 import sys
 import traceback
-from functools import partial
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator, NamedTuple
+from typing import NamedTuple
 
 __all__ = ("__version__", "run_on_file", "main", "ErrMsgASTPlugin")
 
@@ -35,16 +35,21 @@ class Visitor(ast.NodeVisitor):
     def visit_Raise(self, node: ast.Raise) -> None:
         match node.exc:
             case ast.Call(args=[ast.Constant(value=str()), *_]):
-                self.errors.append(EM101(line_number=node.lineno, offset=node.col_offset))
+                self.errors.append(EM101(node))
             case ast.Call(args=[ast.JoinedStr(), *_]):
-                self.errors.append(EM102(line_number=node.lineno, offset=node.col_offset))
+                self.errors.append(EM102(node))
             case _:
                 pass
 
 
-ErrInfo = partial(partial, Flake8ASTErrorInfo, cls=Visitor)
-EM101 = ErrInfo(msg="EM101 Exception must not use a string literal, assign to variable first")
-EM102 = ErrInfo(msg="EM102 Exception must not use an f-string literal, assign to variable first")
+def EM101(node: ast.AST) -> Flake8ASTErrorInfo:
+    msg = "EM101 Exception must not use a string literal, assign to variable first"
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+
+
+def EM102(node: ast.AST) -> Flake8ASTErrorInfo:
+    msg = "EM102 Exception must not use an f-string literal, assign to variable first"
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
 @dataclasses.dataclass
