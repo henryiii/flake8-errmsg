@@ -31,3 +31,17 @@ def test_err1():
         results[1].msg
         == "EM102 Exception must not use an f-string literal, assign to variable first"
     )
+
+
+def test_string_length():
+    node = ast.parse(ERR1)
+    plugin = m.ErrMsgASTPlugin(node)
+    m.ErrMsgASTPlugin.max_string_length = 10
+    results = list(plugin.run())
+    assert len(results) == 1
+    assert results[0].line_number == 2
+
+    assert (
+        results[0].msg
+        == "EM102 Exception must not use an f-string literal, assign to variable first"
+    )

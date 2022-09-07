@@ -57,6 +57,13 @@ applications should print nice errors, usually _without_ a traceback, unless
 something _unexpected_ occurred. An app should not print a traceback for an
 error that is known to be triggerable by a user.
 
+## Options
+
+There is one option, `--errmsg-max-string-length`, which defaults to 0 but can
+be set to a larger value. The check will ignore string literals shorter than
+this length. This option is supported in configuration mode as well. This will
+only affect string literals and not f-strings.
+
 ## Usage
 
 Just add this to your `.pre-commit-config.yaml` `flake8` check under
