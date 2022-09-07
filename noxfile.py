@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import nox
 
-nox.options.sessions = ["lint", "pylint", "tests"]
+nox.options.sessions = ["lint", "pylint", "tests", "tests_flake8"]
 
 
 @nox.session
@@ -42,3 +42,24 @@ def build(session: nox.Session) -> None:
 
     session.install("build")
     session.run("python", "-m", "build")
+
+
+@nox.session
+def tests_flake8(session: nox.Session) -> None:
+    """
+    Run the flake8 tests.
+    """
+    session.install(".", "flake8")
+    result = session.run("flake8", "tests/example1.py", silent=True, success_codes=[1])
+    if len(result.splitlines()) != 2:
+        session.error(f"Expected 2 errors from flake8\n{result}")
+
+    result = session.run(
+        "flake8",
+        "--errmsg-max-string-length=30",
+        "tests/example1.py",
+        silent=True,
+        success_codes=[1],
+    )
+    if len(result.splitlines()) != 1:
+        session.error(f"Expected 1 errors from flake8\n{result}")
