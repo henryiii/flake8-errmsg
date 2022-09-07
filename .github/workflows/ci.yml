@@ -56,7 +56,7 @@ jobs:
       - name: Test package
         run: |
           nox -s tests
-          nos -s tests_flake8
+          nox -s tests_flake8
 
   dist:
     name: Distribution build
