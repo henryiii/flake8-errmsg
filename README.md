@@ -6,8 +6,7 @@
 
 ## Intro
 
-A checker for flake8 that helps format nice error messages. Currently there are
-two checks:
+A checker for Flake8 that helps format nice error messages. The checks are:
 
 - **EM101**: Check for raw usage of a string literal in Exception raising.
 - **EM102**: Check for raw usage of an f-string literal in Exception raising.
@@ -62,7 +61,7 @@ There is one option, `--errmsg-max-string-length`, which defaults to 0 but can
 be set to a larger value. The check will ignore string literals shorter than
 this length. This option is supported in configuration mode as well. This will
 only affect string literals and not f-strings. This option is also supported
-when running directly, without flake8.
+when running directly, without Flake8.
 
 ## Usage
 
@@ -70,7 +69,7 @@ Just add this to your `.pre-commit-config.yaml` `flake8` check under
 `additional_dependencies`. If you use `extend-select`, you should need no other
 config.
 
-You can also manually run this check (without flake8's `noqa` filtering) via
+You can also manually run this check (without Flake8's `noqa` filtering) via
 script entry-point (`pipx run flake8-errmsg <files>`) or module entry-point
 (`python -m flake8_errmsg <files>` when installed).
 
