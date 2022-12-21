@@ -37,7 +37,7 @@ While if you always assign to something like `msg`, then you get:
 ```python
 sub = "Some value"
 msg = f"{sub!r} is incorrect"
-raise RunetimeError(msg)
+raise RuntimeError(msg)
 ```
 
 ```pytb
