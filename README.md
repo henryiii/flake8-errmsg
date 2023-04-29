@@ -47,8 +47,8 @@ Traceback (most recent call last):
 RuntimeError: 'Some value' is incorrect
 ```
 
-Now there's a simpler traceback and no double message. If you have a
-long message, this also often formats better when using Black, too.
+Now there's a simpler traceback and no double message. If you have a long
+message, this also often formats better when using Black, too.
 
 Reminder: Libraries should produce tracebacks with custom error classes, and
 applications should print nice errors, usually _without_ a traceback, unless

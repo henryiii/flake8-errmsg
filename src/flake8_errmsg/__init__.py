@@ -34,6 +34,7 @@ class Visitor(ast.NodeVisitor):
         self.max_string_len = max_string_len
 
     def visit_Raise(self, node: ast.Raise) -> None:
+        self.generic_visit(node)
         match node.exc:
             case ast.Call(args=[ast.Constant(value=str(value)), *_]):
                 if len(value) >= self.max_string_len:
