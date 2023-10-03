@@ -12,6 +12,8 @@ A checker for Flake8 that helps format nice error messages. The checks are:
 - **EM102**: Check for raw usage of an f-string literal in Exception raising.
 - **EM103**: Check for raw usage of `.format` on a string literal in Exception
   raising.
+- **EM104**: Check for missing parentheses for built-in exceptions.
+- **EM105**: Check for missing message for built-in exceptions.
 
 The issue is that Python includes the line with the raise in the default
 traceback (and most other formatters, like Rich and IPython to too). That means
@@ -78,7 +80,8 @@ script entry-point (`pipx run flake8-errmsg <files>`) or module entry-point
 Q: Why Python 3.10+ only? <br/> A: This is a static checker and for developers.
 Developers and static checks should be on 3.10 already. And I was lazy and match
 statements are fantastic for this sort of thing. And the AST module changed in
-3.8 anyway.
+3.8 anyway. Use [Ruff][] (which contains the checks from this plugin) if you
+need to run on older versions.
 
 Q: What other sorts of checks are acceptable? <br/> A: Things that help with
 nice errors. For example, maybe requiring `raise SystemExit(n)` over `sys.exit`,
@@ -91,4 +94,5 @@ nice errors. For example, maybe requiring `raise SystemExit(n)` over `sys.exit`,
 [pypi-link]:                https://pypi.org/project/flake8-errmsg/
 [pypi-platforms]:           https://img.shields.io/pypi/pyversions/flake8-errmsg
 [pypi-version]:             https://img.shields.io/pypi/v/flake8-errmsg
+[ruff]:                      https://github.com/astral-sh/ruff
 <!-- prettier-ignore-end -->
