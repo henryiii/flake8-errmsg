@@ -21,7 +21,7 @@ def pylint(session: nox.Session) -> None:
     """
     # This needs to be installed into the package environment, and is slower
     # than a pre-commit check
-    session.install(".", "pylint")
+    session.install("-e.", "pylint")
     session.run("pylint", "src", *session.posargs)
 
 
@@ -30,7 +30,7 @@ def tests(session: nox.Session) -> None:
     """
     Run the unit and regular tests.
     """
-    session.install(".[test]")
+    session.install("-e.[test]")
     session.run("pytest", *session.posargs)
 
 
@@ -48,7 +48,7 @@ def tests_flake8(session: nox.Session) -> None:
     """
     Run the flake8 tests.
     """
-    session.install(".", "flake8")
+    session.install("-e.", "flake8")
     result = session.run("flake8", "tests/example1.py", silent=True, success_codes=[1])
     if len(result.splitlines()) != 2:
         session.error(f"Expected 2 errors from flake8\n{result}")
