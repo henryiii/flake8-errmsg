@@ -49,7 +49,7 @@ repos:
         args: ["-a", "from __future__ import annotations"] # Python 3.7+
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.13.0
+    rev: v3.14.0
     hooks:
       - id: pyupgrade
         args: ["--py37-plus"]
@@ -84,12 +84,12 @@ repos:
         args: []
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
+    rev: v2.2.6
     hooks:
       - id: codespell
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.5
+    rev: v0.9.0.6
     hooks:
       - id: shellcheck
 
