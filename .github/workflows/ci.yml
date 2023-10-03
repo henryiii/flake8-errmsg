@@ -15,17 +15,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pre-commit:
-    name: Format
+  pylint:
+    name: PyLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --hook-stage manual --all-files
       - name: Run PyLint
         run: |
           echo "::add-matcher::$GITHUB_WORKSPACE/.github/matchers/pylint.json"
@@ -34,7 +28,6 @@ jobs:
   checks:
     name: Check Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
-    needs: [pre-commit]
     strategy:
       fail-fast: false
       matrix:
@@ -61,24 +54,10 @@ jobs:
   dist:
     name: Distribution build
     runs-on: ubuntu-latest
-    needs: [pre-commit]
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build sdist and wheel
-        run: pipx run build
-
-      - uses: actions/upload-artifact@v3
-        with:
-          path: dist
-
-      - name: Check products
-        run: pipx run twine check dist/*
-
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        if: github.event_name == 'release' && github.event.action == 'published'
-        with:
-          password: ${{ secrets.pypi_password }}
+      - uses: hynek/build-and-inspect-python-package@v1
