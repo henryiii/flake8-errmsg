@@ -62,6 +62,7 @@ minversion = "7.0"
 addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
 xfail_strict = true
 filterwarnings = ["error"]
+log_cli_level = "INFO"
 testpaths = [
     "tests",
 ]
@@ -137,3 +138,6 @@ messages_control.disable = [
   "missing-module-docstring",
   "invalid-name",
 ]
+
+[tool.repo-review]
+ignore = ["PY004", "PC111", "RTD"]
