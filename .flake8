@@ -1,3 +1,0 @@
-[flake8]
-extend-ignore = E203, E501, E722, B950
-extend-select = B9

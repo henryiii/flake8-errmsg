@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Copyright (c) 2022 Henry Schreiner. All rights reserved.
 
@@ -108,7 +106,7 @@ def run_on_file(path: str, max_string_length: int = 0) -> None:
         node = ast.parse(code)
     except SyntaxError as e:
         e.filename = path
-        print("Traceback:")
+        print("Traceback:")  # noqa: T201
         traceback.print_exception(e, limit=0)
         raise SystemExit(1) from None
 
@@ -116,7 +114,7 @@ def run_on_file(path: str, max_string_length: int = 0) -> None:
     ErrMsgASTPlugin.max_string_length = max_string_length
 
     for err in plugin.run():
-        print(f"{path}:{err.line_number}:{err.offset} {err.msg}")
+        print(f"{path}:{err.line_number}:{err.offset} {err.msg}")  # noqa: T201
 
 
 def main() -> None:
