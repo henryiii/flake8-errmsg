@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import argparse
 import ast
+import builtins
 import dataclasses
+import inspect
 import traceback
 from collections.abc import Iterator
 from pathlib import Path
@@ -18,7 +20,14 @@ from typing import Any, ClassVar, NamedTuple
 
 __all__ = ("__version__", "run_on_file", "main", "ErrMsgASTPlugin")
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
+
+BUILTIN_EXCEPTION_LIST = {
+    name
+    for name in dir(builtins)
+    if inspect.isclass(_cls := getattr(builtins, name))
+    and issubclass(_cls, BaseException)
+}
 
 
 class Flake8ASTErrorInfo(NamedTuple):
@@ -48,6 +57,12 @@ class Visitor(ast.NodeVisitor):
                 ]
             ):
                 self.errors.append(EM103(node))
+            case ast.Name(id=name) if name in BUILTIN_EXCEPTION_LIST:
+                self.errors.append(EM104(node))
+            case ast.Call(
+                func=ast.Name(id=name), args=[]
+            ) if name in BUILTIN_EXCEPTION_LIST:
+                self.errors.append(EM105(node))
             case _:
                 pass
 
@@ -64,6 +79,16 @@ def EM102(node: ast.AST) -> Flake8ASTErrorInfo:
 
 def EM103(node: ast.AST) -> Flake8ASTErrorInfo:
     msg = "EM103 Exception must not use a .format() string directly, assign to variable first"
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+
+
+def EM104(node: ast.AST) -> Flake8ASTErrorInfo:
+    msg = "EM104 Built-in Exceptions must not be thrown without being called"
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+
+
+def EM105(node: ast.AST) -> Flake8ASTErrorInfo:
+    msg = "EM105 Built-in Exceptions must have a useful message"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
