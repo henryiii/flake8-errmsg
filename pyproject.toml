@@ -104,6 +104,9 @@ select = [
   "NPY",         # NumPy specific rules
   "PD",          # pandas-vet
 ]
+ignore = [
+  "PLR2004",     # Magic value used in comparsion
+]
 isort.required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
