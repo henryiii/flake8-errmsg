@@ -77,10 +77,11 @@ show_error_codes = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 warn_unreachable = true
 
-
 [tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
 select = [
-  "E", "F", "W", # flake8
   "B",           # flake8-bugbear
   "I",           # isort
   "ARG",         # flake8-unused-arguments
@@ -103,19 +104,12 @@ select = [
   "NPY",         # NumPy specific rules
   "PD",          # pandas-vet
 ]
-extend-ignore = [
-  "PLR",    # Design related pylint codes
-  "E501",   # Line too long
+ignore = [
+  "PLR2004",     # Magic value used in comparison
 ]
-src = ["src"]
-unfixable = [
-  "T20",  # Removes print statements
-  "F841", # Removes unused variables
-]
-flake8-unused-arguments.ignore-variadic-names = true
 isort.required-imports = ["from __future__ import annotations"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**" = ["T20"]
 
 
