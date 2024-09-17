@@ -65,27 +65,27 @@ class Visitor(ast.NodeVisitor):
                 pass
 
 
-def EM101(node: ast.AST) -> Flake8ASTErrorInfo:
+def EM101(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM101 Exception must not use a string literal, assign to variable first"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
-def EM102(node: ast.AST) -> Flake8ASTErrorInfo:
+def EM102(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM102 Exception must not use an f-string literal, assign to variable first"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
-def EM103(node: ast.AST) -> Flake8ASTErrorInfo:
+def EM103(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM103 Exception must not use a .format() string directly, assign to variable first"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
-def EM104(node: ast.AST) -> Flake8ASTErrorInfo:
+def EM104(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM104 Built-in Exceptions must not be thrown without being called"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
-def EM105(node: ast.AST) -> Flake8ASTErrorInfo:
+def EM105(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM105 Built-in Exceptions must have a useful message"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
