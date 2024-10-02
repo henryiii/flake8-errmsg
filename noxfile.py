@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import nox
 
-nox.options.sessions = ["lint", "pylint", "tests", "tests_flake8"]
+nox.needs_version = ">=2024.4.15"
+nox.options.default_venv_backend = "uv|virtualenv"
 
 
 @nox.session
@@ -34,7 +35,7 @@ def tests(session: nox.Session) -> None:
     session.run("pytest", *session.posargs)
 
 
-@nox.session
+@nox.session(default=False)
 def build(session: nox.Session) -> None:
     """
     Build an SDist and wheel.
