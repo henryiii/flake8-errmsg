@@ -21,9 +21,12 @@ jobs:
   publish:
     name: Publish
     needs: [dist]
-    environment: pypi
+    environment:
+      name: pypi
+      url: https://pypi.org/p/flake8-errmsg
     permissions:
       id-token: write
+      attestations: write
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
@@ -32,4 +35,11 @@ jobs:
           name: Packages
           path: dist
 
+      - name: Generate artifact attestation for sdist and wheel
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "dist/*"
+
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
