@@ -16,7 +16,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, ClassVar, NamedTuple
 
-__all__ = ("__version__", "run_on_file", "main", "ErrMsgASTPlugin")
+__all__ = ("ErrMsgASTPlugin", "__version__", "main", "run_on_file")
 
 __version__ = "0.5.1"
 
