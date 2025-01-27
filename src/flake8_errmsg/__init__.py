@@ -16,7 +16,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, ClassVar, NamedTuple
 
-__all__ = ("__version__", "run_on_file", "main", "ErrMsgASTPlugin")
+__all__ = ("ErrMsgASTPlugin", "__version__", "main", "run_on_file")
 
 __version__ = "0.5.1"
 
@@ -57,9 +57,9 @@ class Visitor(ast.NodeVisitor):
                 self.errors.append(EM103(node))
             case ast.Name(id=name) if name in BUILTIN_EXCEPTION_LIST:
                 self.errors.append(EM104(node))
-            case ast.Call(
-                func=ast.Name(id=name), args=[]
-            ) if name in BUILTIN_EXCEPTION_LIST:
+            case ast.Call(func=ast.Name(id=name), args=[]) if (
+                name in BUILTIN_EXCEPTION_LIST
+            ):
                 self.errors.append(EM105(node))
             case _:
                 pass
