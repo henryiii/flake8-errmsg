@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v5
       - name: Run PyLint
         run: uvx nox -s pylint -- --output-format=github
 
@@ -40,7 +40,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
 
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v5
 
       - name: Test package
         run: |
