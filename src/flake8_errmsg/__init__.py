@@ -10,6 +10,7 @@ import argparse
 import ast
 import builtins
 import dataclasses
+import functools
 import inspect
 import sys
 import traceback
@@ -144,10 +145,10 @@ def run_on_file(path: str, max_string_length: int = 0) -> None:
 
 
 def main() -> None:
-    argops = (
-        {} if sys.version_info < (3, 14) else {"color": True, "suggest_on_error": True}
-    )
-    parser = argparse.ArgumentParser(allow_abbrev=False, **argops)  # type: ignore[arg-type]
+    make_parser = functools.partial(argparse.ArgumentParser, allow_abbrev=False)
+    if sys.version_info >= (3, 14):
+        make_parser = functools.partial(make_parser, color=True, suggest_on_error=True)
+    parser = make_parser()
     parser.add_argument("--errmsg-max-string-length", type=int, default=0)
     parser.add_argument("files", nargs="+")
     namespace = parser.parse_args()
