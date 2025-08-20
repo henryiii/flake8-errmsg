@@ -23,7 +23,7 @@ nox -s docs -- serve  # Build and serve the docs
 nox -s build  # Make an SDist and wheel
 ```
 
-Nox handles everything for you, including setting up an temporary virtual
+Nox handles everything for you, including setting up a temporary virtual
 environment for each run.
 
 # Setting up a development environment manually
