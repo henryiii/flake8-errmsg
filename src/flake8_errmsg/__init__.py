@@ -68,17 +68,22 @@ class Visitor(ast.NodeVisitor):
 
 
 def EM101(node: ast.stmt) -> Flake8ASTErrorInfo:
-    msg = "EM101 Exception must not use a string literal, assign to variable first"
+    msg = "EM101 Exceptions must not use a string literal; assign to a variable first"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
 def EM102(node: ast.stmt) -> Flake8ASTErrorInfo:
-    msg = "EM102 Exception must not use an f-string literal, assign to variable first"
+    msg = (
+        "EM102 Exceptions must not use an f-string literal; assign to a variable first"
+    )
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
 def EM103(node: ast.stmt) -> Flake8ASTErrorInfo:
-    msg = "EM103 Exception must not use a .format() string directly, assign to variable first"
+    msg = (
+        "EM103 Exceptions must not use a .format() string directly; "
+        "assign to a variable first"
+    )
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
