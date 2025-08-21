@@ -90,3 +90,69 @@ def test_err4():
     assert len(results) == 1
     assert results[0].line_number == 1
     assert results[0].msg == "EM105 Built-in Exceptions must have a useful message"
+
+
+# --- EM106 tests ---
+
+ERR6 = """\
+x = 1
+raise ValueError(msg := f"Bad thing: {x}")
+"""
+
+
+def test_err6_positional_namedexpr():
+    node = ast.parse(ERR6)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    assert len(results) == 1
+    assert results[0].line_number == 2
+    assert (
+        results[0].msg
+        == "EM106 Exceptions must not use walrus assignment in raise call"
+    )
+
+
+ERR7 = """\
+raise RuntimeError(_ := "oops")
+"""
+
+
+def test_err7_simple_namedexpr_constant():
+    node = ast.parse(ERR7)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    assert len(results) == 1
+    assert results[0].line_number == 1
+    assert (
+        results[0].msg
+        == "EM106 Exceptions must not use walrus assignment in raise call"
+    )
+
+
+ERR8 = """\
+raise MyErr(message=(m := "oops"))
+"""
+
+
+def test_err8_keyword_namedexpr():
+    node = ast.parse(ERR8)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    assert len(results) == 1
+    assert results[0].line_number == 1
+    assert (
+        results[0].msg
+        == "EM106 Exceptions must not use walrus assignment in raise call"
+    )
+
+
+ERR9 = """\
+def make_msg(x):
+    return (m := f"...{x}...")
+
+raise ValueError(make_msg(1))
+"""
+
+
+def test_err9_namedexpr_outside_raise_ok():
+    node = ast.parse(ERR9)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    # No EM106 should be reported; raise does not contain a walrus expression directly
+    assert results == []
