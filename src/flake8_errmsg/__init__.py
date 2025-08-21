@@ -74,6 +74,15 @@ class Visitor(ast.NodeVisitor):
                 pass
 
 
+def _contains_namedexpr(node: ast.AST) -> bool:
+    """Return True if a NamedExpr (walrus) exists anywhere in the node subtree.
+
+    We keep this narrow: this is only invoked for the immediate args/keyword
+    values of a raise's exception constructor call.
+    """
+    return any(isinstance(child, ast.NamedExpr) for child in ast.walk(node))
+
+
 def EM101(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM101 Exception must not use a string literal, assign to variable first"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
