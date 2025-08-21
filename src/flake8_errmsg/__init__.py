@@ -63,6 +63,8 @@ class Visitor(ast.NodeVisitor):
                 name in BUILTIN_EXCEPTION_LIST
             ):
                 self.errors.append(EM105(node))
+            # case ast.Call(...)
+            #     self.errors.append(EM106(node))
             case _:
                 pass
 
