@@ -63,13 +63,13 @@ class Visitor(ast.NodeVisitor):
                 name in BUILTIN_EXCEPTION_LIST
             ):
                 self.errors.append(EM105(node))
-            # case ast.Call(args=args, keywords=keywords):
-            #     # EM106: Flag any walrus (NamedExpr) occurring directly inside the
-            #     # raise call arguments or keyword values.
-            #     if any(_contains_namedexpr(x) for x in args) or any(
-            #         _contains_namedexpr(kw.value) for kw in keywords
-            #     ):
-            #         self.errors.append(EM106(node))
+            case ast.Call(args=args, keywords=keywords):
+                # EM106: Flag any walrus (NamedExpr) occurring directly inside the
+                # raise call arguments or keyword values.
+                if any(_contains_namedexpr(x) for x in args) or any(
+                    _contains_namedexpr(kw.value) for kw in keywords
+                ):
+                    self.errors.append(EM106(node))
             case _:
                 pass
 
