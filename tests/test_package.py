@@ -107,7 +107,7 @@ def test_err6_positional_namedexpr():
     assert results[0].line_number == 2
     assert (
         results[0].msg
-        == "EM106 Exceptions must not use walrus assignment in raise call"
+        == "EM106 Exceptions must not use walrus assignment in raise calls"
     )
 
 
@@ -123,7 +123,7 @@ def test_err7_simple_namedexpr_constant():
     assert results[0].line_number == 1
     assert (
         results[0].msg
-        == "EM106 Exceptions must not use walrus assignment in raise call"
+        == "EM106 Exceptions must not use walrus assignment in raise calls"
     )
 
 
@@ -139,7 +139,7 @@ def test_err8_keyword_namedexpr():
     assert results[0].line_number == 1
     assert (
         results[0].msg
-        == "EM106 Exceptions must not use walrus assignment in raise call"
+        == "EM106 Exceptions must not use walrus assignment in raise calls"
     )
 
 

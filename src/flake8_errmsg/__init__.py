@@ -109,7 +109,7 @@ def EM105(node: ast.stmt) -> Flake8ASTErrorInfo:
 
 
 def EM106(node: ast.stmt) -> Flake8ASTErrorInfo:
-    msg = "EM106 Exceptions must not use walrus assignment in raise call"
+    msg = "EM106 Exceptions must not use walrus assignment in raise calls"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 
