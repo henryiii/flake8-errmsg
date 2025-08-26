@@ -1,14 +1,14 @@
-See the [Scikit-HEP Developer introduction][skhep-dev-intro] for a detailed
-description of best practices for developing Scikit-HEP packages.
+See the [Scientific Python Developer Guide][spc-dev-intro] for a detailed
+description of best practices for developing scientific packages.
 
-[skhep-dev-intro]: https://scikit-hep.org/developer/intro
+[spc-dev-intro]: https://learn.scientific-python.org/development/
 
 # Quick development
 
 The fastest way to start with development is to use nox. If you don't have nox,
 you can use `pipx run nox` to run it without installing, or `pipx install nox`.
-If you don't have pipx (pip for applications), then you can install with with
-`pip install pipx` (the only case were installing an application with regular
+If you don't have pipx (pip for applications), then you can install it with
+`pip install pipx` (the only case where installing an application with regular
 pip is reasonable). If you use macOS, then pipx and nox are both in brew, use
 `brew install pipx nox`.
 
@@ -23,7 +23,7 @@ $ nox -s docs -- serve  # Build and serve the docs
 $ nox -s build  # Make an SDist and wheel
 ```
 
-Nox handles everything for you, including setting up an temporary virtual
+Nox handles everything for you, including setting up a temporary virtual
 environment for each run.
 
 # Setting up a development environment manually
