@@ -75,10 +75,12 @@ class Visitor(ast.NodeVisitor):
 
 
 def _contains_namedexpr(node: ast.AST) -> bool:
-    """Return True if a NamedExpr (walrus) exists anywhere in the node subtree.
+    """Return True if the node or any of its descendants contains a walrus.
 
-    We keep this narrow: this is only invoked for the immediate args/keyword
-    values of a raise's exception constructor call.
+    This checks for `ast.NamedExpr` anywhere in the given node's subtree by walking all
+    descendants with `ast.walk`. The helper is intentionally only called on the
+    immediate positional and keyword argument nodes of the exception constructor within
+    a `raise` statement.
     """
     return any(isinstance(child, ast.NamedExpr) for child in ast.walk(node))
 
