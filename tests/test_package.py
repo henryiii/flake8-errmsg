@@ -25,11 +25,11 @@ def test_err1():
 
     assert (
         results[0].msg
-        == "EM101 Exception must not use a string literal, assign to variable first"
+        == "EM101 Exceptions must not use a string literal; assign to a variable first"
     )
     assert (
         results[1].msg
-        == "EM102 Exception must not use an f-string literal, assign to variable first"
+        == "EM102 Exceptions must not use an f-string literal; assign to a variable first"
     )
 
 
@@ -43,7 +43,7 @@ def test_string_length():
 
     assert (
         results[0].msg
-        == "EM102 Exception must not use an f-string literal, assign to variable first"
+        == "EM102 Exceptions must not use an f-string literal; assign to a variable first"
     )
 
 
@@ -59,7 +59,7 @@ def test_err2():
     assert results[0].line_number == 1
     assert (
         results[0].msg
-        == "EM103 Exception must not use a .format() string directly, assign to variable first"
+        == "EM103 Exceptions must not use a .format() string directly; assign to a variable first"
     )
 
 
