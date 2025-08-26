@@ -63,8 +63,20 @@ class Visitor(ast.NodeVisitor):
                 name in BUILTIN_EXCEPTION_LIST
             ):
                 self.errors.append(EM105(node))
+            case ast.Call(args=args, keywords=keywords):
+                # EM106: Flag any walrus (NamedExpr) occurring inside the
+                # raise call arguments or keyword values.
+                if any(_contains_namedexpr(x) for x in args) or any(
+                    _contains_namedexpr(kw.value) for kw in keywords
+                ):
+                    self.errors.append(EM106(node))
             case _:
                 pass
+
+
+def _contains_namedexpr(node: ast.AST) -> bool:
+    """Return True if the node or any of its descendants contains a walrus."""
+    return any(isinstance(child, ast.NamedExpr) for child in ast.walk(node))
 
 
 def EM101(node: ast.stmt) -> Flake8ASTErrorInfo:
@@ -94,6 +106,11 @@ def EM104(node: ast.stmt) -> Flake8ASTErrorInfo:
 
 def EM105(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM105 Built-in Exceptions must have a useful message"
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+
+
+def EM106(node: ast.stmt) -> Flake8ASTErrorInfo:
+    msg = "EM106 Exceptions must not use walrus assignment in raise calls"
     return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
 
 

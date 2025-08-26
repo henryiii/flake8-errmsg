@@ -14,6 +14,7 @@ A checker for Flake8 that helps format nice error messages. The checks are:
   raising.
 - **EM104**: Check for missing parentheses for built-in exceptions.
 - **EM105**: Check for missing message for built-in exceptions.
+- **EM106**: Check for walrus assignment inside a `raise` call's arguments.
 
 The issue is that Python includes the line with the raise in the default
 traceback (and most other formatters, like Rich and IPython to too). That means
