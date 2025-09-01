@@ -10,9 +10,7 @@ import argparse
 import ast
 import builtins
 import dataclasses
-import functools
 import inspect
-import sys
 import traceback
 from collections.abc import Iterator
 from pathlib import Path
@@ -167,10 +165,7 @@ def run_on_file(path: str, max_string_length: int = 0) -> None:
 
 
 def main() -> None:
-    make_parser = functools.partial(argparse.ArgumentParser, allow_abbrev=False)
-    if sys.version_info >= (3, 14):
-        make_parser = functools.partial(make_parser, color=True, suggest_on_error=True)
-    parser = make_parser()
+    parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument("--errmsg-max-string-length", type=int, default=0)
     parser.add_argument("files", nargs="+")
     namespace = parser.parse_args()
