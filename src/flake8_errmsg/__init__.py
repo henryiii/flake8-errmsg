@@ -18,7 +18,7 @@ from typing import Any, ClassVar, NamedTuple
 
 __all__ = ("ErrMsgASTPlugin", "__version__", "main", "run_on_file")
 
-__version__ = "0.5.1"
+__version__ = "0.6.0"
 
 BUILTIN_EXCEPTION_LIST = {
     name
