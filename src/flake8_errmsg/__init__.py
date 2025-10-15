@@ -43,7 +43,7 @@ class Visitor(ast.NodeVisitor):
     def visit_Raise(self, node: ast.Raise) -> None:
         self.generic_visit(node)
         match node.exc:
-            case ast.Call(args=[ast.Constant(value=str(value)), *_]):
+            case ast.Call(args=[ast.Constant(value=str() as value), *_]):
                 if len(value) >= self.max_string_len:
                     self.errors.append(EM101(node))
             case ast.Call(args=[ast.JoinedStr(), *_]):
