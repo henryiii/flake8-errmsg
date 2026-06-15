@@ -32,7 +32,7 @@ class Flake8ASTErrorInfo(NamedTuple):
     line_number: int
     offset: int
     msg: str
-    cls: type  # unused
+    cls: type  # the checker class; the 4th tuple element flake8 expects
 
 
 class Visitor(ast.NodeVisitor):
