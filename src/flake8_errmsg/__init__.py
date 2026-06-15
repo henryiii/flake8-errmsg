@@ -73,8 +73,17 @@ class Visitor(ast.NodeVisitor):
 
 
 def _contains_namedexpr(node: ast.AST) -> bool:
-    """Return True if the node or any of its descendants contains a walrus."""
-    return any(isinstance(child, ast.NamedExpr) for child in ast.walk(node))
+    """Return True if the node contains a walrus that binds in the raise's scope.
+
+    Lambdas introduce a new scope, so a walrus inside one does not name the
+    exception message and is not flagged (e.g. a ``key=lambda x: (y := x)``).
+    """
+    if isinstance(node, ast.NamedExpr):
+        return True
+    return any(
+        not isinstance(child, ast.Lambda) and _contains_namedexpr(child)
+        for child in ast.iter_child_nodes(node)
+    )
 
 
 def _error(node: ast.stmt, msg: str) -> Flake8ASTErrorInfo:
