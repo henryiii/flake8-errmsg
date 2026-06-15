@@ -156,3 +156,15 @@ def test_err9_namedexpr_outside_raise_ok():
     results = list(m.ErrMsgASTPlugin(node).run())
     # No EM106 should be reported; raise does not contain a walrus expression directly
     assert results == []
+
+
+ERR10 = """\
+raise ValueError(sorted(xs, key=lambda v: (k := v))[0])
+"""
+
+
+def test_err10_namedexpr_in_lambda_ok():
+    node = ast.parse(ERR10)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    # The walrus binds in the lambda's own scope, not the raise's, so no EM106.
+    assert results == []
