@@ -36,6 +36,7 @@ def test_err1():
     )
 
 
+@pytest.mark.usefixtures("_reset_max_string_length")
 def test_string_length():
     node = ast.parse(ERR1)
     plugin = m.ErrMsgASTPlugin(node)
