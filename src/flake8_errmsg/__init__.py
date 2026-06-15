@@ -20,12 +20,12 @@ __all__ = ("ErrMsgASTPlugin", "__version__", "main", "run_on_file")
 
 __version__ = "0.6.0"
 
-BUILTIN_EXCEPTION_LIST = {
+BUILTIN_EXCEPTIONS = frozenset(
     name
     for name in dir(builtins)
     if inspect.isclass(_cls := getattr(builtins, name))
     and issubclass(_cls, BaseException)
-}
+)
 
 
 class Flake8ASTErrorInfo(NamedTuple):
@@ -55,10 +55,10 @@ class Visitor(ast.NodeVisitor):
                 ]
             ):
                 self.errors.append(EM103(node))
-            case ast.Name(id=name) if name in BUILTIN_EXCEPTION_LIST:
+            case ast.Name(id=name) if name in BUILTIN_EXCEPTIONS:
                 self.errors.append(EM104(node))
             case ast.Call(func=ast.Name(id=name), args=[]) if (
-                name in BUILTIN_EXCEPTION_LIST
+                name in BUILTIN_EXCEPTIONS
             ):
                 self.errors.append(EM105(node))
             case ast.Call(args=args, keywords=keywords):
@@ -77,16 +77,20 @@ def _contains_namedexpr(node: ast.AST) -> bool:
     return any(isinstance(child, ast.NamedExpr) for child in ast.walk(node))
 
 
+def _error(node: ast.stmt, msg: str) -> Flake8ASTErrorInfo:
+    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+
+
 def EM101(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM101 Exceptions must not use a string literal; assign to a variable first"
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+    return _error(node, msg)
 
 
 def EM102(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = (
         "EM102 Exceptions must not use an f-string literal; assign to a variable first"
     )
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+    return _error(node, msg)
 
 
 def EM103(node: ast.stmt) -> Flake8ASTErrorInfo:
@@ -94,25 +98,22 @@ def EM103(node: ast.stmt) -> Flake8ASTErrorInfo:
         "EM103 Exceptions must not use a .format() string directly; "
         "assign to a variable first"
     )
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+    return _error(node, msg)
 
 
 def EM104(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM104 Built-in Exceptions must not be thrown without being called"
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+    return _error(node, msg)
 
 
 def EM105(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM105 Built-in Exceptions must have a useful message"
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
+    return _error(node, msg)
 
 
 def EM106(node: ast.stmt) -> Flake8ASTErrorInfo:
     msg = "EM106 Exceptions must not use walrus assignment in raise calls"
-    return Flake8ASTErrorInfo(node.lineno, node.col_offset, msg, Visitor)
-
-
-MAX_STRING_LENGTH = 0
+    return _error(node, msg)
 
 
 @dataclasses.dataclass
@@ -124,7 +125,7 @@ class ErrMsgASTPlugin:
 
     _: dataclasses.KW_ONLY
     name: str = "flake8_errmsg"
-    version: str = "0.1.0"
+    version: str = __version__
 
     def run(self) -> Iterator[Flake8ASTErrorInfo]:
         visitor = Visitor(self.max_string_length)
