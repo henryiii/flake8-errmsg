@@ -139,3 +139,7 @@ cython_debug/
 
 # setuptools_scm
 src/*/_version.py
+
+# Symlink to AGENTS.md
+CLAUDE.md
+.claude/
