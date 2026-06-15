@@ -50,7 +50,11 @@ class Visitor(ast.NodeVisitor):
                 self.errors.append(EM102(node))
             case ast.Call(
                 args=[
-                    ast.Call(func=ast.Attribute(attr="format", value=ast.Constant())),
+                    ast.Call(
+                        func=ast.Attribute(
+                            attr="format", value=ast.Constant() | ast.JoinedStr()
+                        )
+                    ),
                     *_,
                 ]
             ):

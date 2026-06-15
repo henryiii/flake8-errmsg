@@ -63,6 +63,22 @@ def test_err2():
     )
 
 
+ERR2B = """\
+raise RuntimeError(f"this {x} is".format())
+"""
+
+
+def test_err2b_fstring_format():
+    node = ast.parse(ERR2B)
+    results = list(m.ErrMsgASTPlugin(node).run())
+    assert len(results) == 1
+    assert results[0].line_number == 1
+    assert (
+        results[0].msg
+        == "EM103 Exceptions must not use a .format() string directly; assign to a variable first"
+    )
+
+
 ERR3 = """\
 raise RuntimeError
 """
