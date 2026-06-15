@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import ast
+import sys
+
+import pytest
 
 import flake8_errmsg as m
 
@@ -184,3 +187,71 @@ def test_err10_namedexpr_in_lambda_ok():
     results = list(m.ErrMsgASTPlugin(node).run())
     # The walrus binds in the lambda's own scope, not the raise's, so no EM106.
     assert results == []
+
+
+# --- max_string_length boundary ---
+
+
+@pytest.fixture
+def _reset_max_string_length():
+    """Restore the class-level option, which several tests mutate in place."""
+    original = m.ErrMsgASTPlugin.max_string_length
+    yield
+    m.ErrMsgASTPlugin.max_string_length = original
+
+
+@pytest.mark.usefixtures("_reset_max_string_length")
+def test_string_length_boundary():
+    node = ast.parse('raise RuntimeError("12345")\n')  # length 5
+
+    m.ErrMsgASTPlugin.max_string_length = 5  # len == max is still flagged (>=)
+    assert len(list(m.ErrMsgASTPlugin(node).run())) == 1
+
+    m.ErrMsgASTPlugin.max_string_length = 6  # len < max is ignored
+    assert list(m.ErrMsgASTPlugin(node).run()) == []
+
+
+# --- CLI / run_on_file ---
+
+
+@pytest.mark.usefixtures("_reset_max_string_length")
+def test_run_on_file_reports_errors(tmp_path, capsys):
+    path = tmp_path / "example.py"
+    path.write_text('raise RuntimeError("a long message")\n', encoding="utf-8")
+
+    m.run_on_file(str(path))
+
+    out = capsys.readouterr().out
+    assert f"{path}:1:0 EM101" in out
+
+
+@pytest.mark.usefixtures("_reset_max_string_length")
+def test_run_on_file_respects_max_string_length(tmp_path, capsys):
+    path = tmp_path / "example.py"
+    path.write_text('raise RuntimeError("short")\n', encoding="utf-8")
+
+    m.run_on_file(str(path), max_string_length=100)
+
+    assert capsys.readouterr().out == ""
+
+
+def test_run_on_file_syntax_error(tmp_path, capsys):
+    path = tmp_path / "broken.py"
+    path.write_text("raise RuntimeError(\n", encoding="utf-8")
+
+    with pytest.raises(SystemExit) as exc:
+        m.run_on_file(str(path))
+
+    assert exc.value.code == 1
+    assert "Traceback:" in capsys.readouterr().out
+
+
+@pytest.mark.usefixtures("_reset_max_string_length")
+def test_main(tmp_path, capsys, monkeypatch):
+    path = tmp_path / "example.py"
+    path.write_text('raise RuntimeError("a long message")\n', encoding="utf-8")
+
+    monkeypatch.setattr(sys, "argv", ["flake8-errmsg", str(path)])
+    m.main()
+
+    assert "EM101" in capsys.readouterr().out
