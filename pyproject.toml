@@ -60,6 +60,10 @@ envs.default.dependencies = [
 ]
 
 
+[tool.uv]
+exclude-newer = "7 days"
+
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
